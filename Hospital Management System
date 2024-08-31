@@ -1,0 +1,336 @@
+import java.util.*;
+
+class Patient {
+    private String patientId;
+    private String name;
+    private int age;
+    private String gender;
+    private List<Appointment> appointments;
+    private List<String> medicalHistory;
+
+    public Patient(String patientId, String name, int age, String gender) {
+        this.patientId = patientId;
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.appointments = new ArrayList<>();
+        this.medicalHistory = new ArrayList<>();
+    }
+
+    public void addAppointment(Appointment appointment) {
+        appointments.add(appointment);
+    }
+
+    public void addMedicalRecord(String record) {
+        medicalHistory.add(record);
+    }
+
+    public void viewMedicalHistory() {
+        System.out.println("Medical History for " + name + ":");
+        for (String record : medicalHistory) {
+            System.out.println(record);
+        }
+    }
+
+    // Getters and Setters
+    public String getPatientId() {
+        return patientId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+}
+
+class Doctor {
+    private String doctorId;
+    private String name;
+    private String specialty;
+    private List<Appointment> appointments;
+
+    public Doctor(String doctorId, String name, String specialty) {
+        this.doctorId = doctorId;
+        this.name = name;
+        this.specialty = specialty;
+        this.appointments = new ArrayList<>();
+    }
+
+    public void addAppointment(Appointment appointment) {
+        appointments.add(appointment);
+    }
+
+    // Getters and Setters
+    public String getDoctorId() {
+        return doctorId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSpecialty() {
+        return specialty;
+    }
+
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+}
+
+class Appointment {
+    private String appointmentId;
+    private Patient patient;
+    private Doctor doctor;
+    private Date date;
+    private String time;
+
+    public Appointment(String appointmentId, Patient patient, Doctor doctor, Date date, String time) {
+        this.appointmentId = appointmentId;
+        this.patient = patient;
+        this.doctor = doctor;
+        this.date = date;
+        this.time = time;
+    }
+
+    // Getters and Setters
+    public String getAppointmentId() {
+        return appointmentId;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+}
+
+class Billing {
+    private String billingId;
+    private Patient patient;
+    private double amount;
+    private Date billingDate;
+
+    public Billing(String billingId, Patient patient, double amount, Date billingDate) {
+        this.billingId = billingId;
+        this.patient = patient;
+        this.amount = amount;
+        this.billingDate = billingDate;
+    }
+
+    public void generateInvoice() {
+        System.out.println("Billing Invoice");
+        System.out.println("Patient: " + patient.getName());
+        System.out.println("Amount: $" + amount);
+        System.out.println("Date: " + billingDate);
+    }
+
+    // Getters and Setters
+    public String getBillingId() {
+        return billingId;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public Date getBillingDate() {
+        return billingDate;
+    }
+}
+
+class InventoryItem {
+    private String itemId;
+    private String name;
+    private int quantity;
+    private double price;
+
+    public InventoryItem(String itemId, String name, int quantity, double price) {
+        this.itemId = itemId;
+        this.name = name;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
+    public void updateQuantity(int newQuantity) {
+        this.quantity = newQuantity;
+    }
+
+    // Getters and Setters
+    public String getItemId() {
+        return itemId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+}
+
+class Staff {
+    private String staffId;
+    private String name;
+    private String role;
+    private double salary;
+
+    public Staff(String staffId, String name, String role, double salary) {
+        this.staffId = staffId;
+        this.name = name;
+        this.role = role;
+        this.salary = salary;
+    }
+
+    // Getters and Setters
+    public String getStaffId() {
+        return staffId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+}
+
+class HospitalManagementSystem {
+    private Map<String, Patient> patients;
+    private Map<String, Doctor> doctors;
+    private Map<String, Billing> billings;
+    private Map<String, InventoryItem> inventory;
+    private Map<String, Staff> staffMembers;
+
+    public HospitalManagementSystem() {
+        patients = new HashMap<>();
+        doctors = new HashMap<>();
+        billings = new HashMap<>();
+        inventory = new HashMap<>();
+        staffMembers = new HashMap<>();
+    }
+
+    public void addPatient(Patient patient) {
+        patients.put(patient.getPatientId(), patient);
+    }
+
+    public void addDoctor(Doctor doctor) {
+        doctors.put(doctor.getDoctorId(), doctor);
+    }
+
+    public void scheduleAppointment(String appointmentId, String patientId, String doctorId, Date date, String time) {
+        Patient patient = patients.get(patientId);
+        Doctor doctor = doctors.get(doctorId);
+        Appointment appointment = new Appointment(appointmentId, patient, doctor, date, time);
+        patient.addAppointment(appointment);
+        doctor.addAppointment(appointment);
+    }
+
+    public void generateBill(String billingId, String patientId, double amount, Date date) {
+        Patient patient = patients.get(patientId);
+        Billing billing = new Billing(billingId, patient, amount, date);
+        billings.put(billingId, billing);
+        billing.generateInvoice();
+    }
+
+    public void addInventoryItem(InventoryItem item) {
+        inventory.put(item.getItemId(), item);
+    }
+
+    public void addStaffMember(Staff staff) {
+        staffMembers.put(staff.getStaffId(), staff);
+    }
+
+    public void displayPatientInfo(String patientId) {
+        Patient patient = patients.get(patientId);
+        System.out.println("Patient Info: ");
+        System.out.println("Name: " + patient.getName());
+        System.out.println("Age: " + patient.getAge());
+        System.out.println("Gender: " + patient.getGender());
+        System.out.println("Appointments: ");
+        for (Appointment appt : patient.getAppointments()) {
+            System.out.println("  Date: " + appt.getDate() + ", Doctor: " + appt.getDoctor().getName());
+        }
+    }
+
+    // Additional methods for displaying and managing other entities can be added
+    // here
+}
+
+public class Main {
+    public static void main(String[] args) {
+        HospitalManagementSystem hms = new HospitalManagementSystem();
+
+        // Adding patients
+        Patient p1 = new Patient("P001", "Amit kumar", 25, "Male");
+        Patient p2 = new Patient("P002", "Ananya ", 24, "Female");
+
+        hms.addPatient(p1);
+        hms.addPatient(p2);
+
+        // Adding doctors
+        Doctor d1 = new Doctor("D001", "Dr. Sumit", "Cardiologist");
+        Doctor d2 = new Doctor("D002", "Dr. Sunita", "Neurologist");
+
+        hms.addDoctor(d1);
+        hms.addDoctor(d2);
+
+        // Scheduling an appointment
+        hms.scheduleAppointment("A001", "P001", "D001", new Date(), "10:00 AM");
+
+        // Generating a bill
+        hms.generateBill("B001", "P001", 500.00, new Date());
+
+        // Adding inventory items
+        InventoryItem item1 = new InventoryItem("I001", "Bandages", 100, 1.5);
+        InventoryItem item2 = new InventoryItem("I002", "Syringes", 200, 0.5);
+
+        hms.addInventoryItem(item1);
+        hms.addInventoryItem(item2);
+
+        // Adding staff members
+        Staff s1 = new Staff("S001", "Alice", "Nurse", 3000.00);
+        Staff s2 = new Staff("S002", "Bob", "Technician", 2500.00);
+
+        hms.addStaffMember(s1);
+        hms.addStaffMember(s2);
+
+        // Displaying patient info
+        hms.displayPatientInfo("P001");
+    }
+}
